@@ -13,4 +13,9 @@ public interface MoviesRepository extends JpaRepository<Movies, Integer> {
 
     @Query("select m from Movies m where m.movieId = ?1")
     Optional<Movies> findByMovieId(Integer movie_id);
+
+    @Query("select m from Movies m where m.title = ?1")
+    Optional<Movies> findByTitle(String title);
+
+
 }

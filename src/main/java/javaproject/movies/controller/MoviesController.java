@@ -2,6 +2,7 @@ package javaproject.movies.controller;
 
 import jakarta.transaction.Transactional;
 import javaproject.movies.domain.Movies;
+import javaproject.movies.repository.CustomMoviesRepository;
 import javaproject.movies.repository.MoviesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -13,32 +14,31 @@ import java.util.List;
 @RequestMapping("/movies")
 public class MoviesController {
     private final MoviesRepository moviesRepository;
+    private final CustomMoviesRepository customMoviesRepository;
 
     @GetMapping
     public List<Movies> getAllMovies() {
         return moviesRepository.findAll();
     }
 
-    @GetMapping("/{movie_id}")
-    public Movies getMovieById(@PathVariable("movie_id") Integer movie_id) {
+    @GetMapping("/{movieId}")
+    public Movies getMovieById(@PathVariable("movieId") Integer movie_id) {
         return moviesRepository.findByMovieId(movie_id).get();
     }
 
     @PostMapping
-    @Transactional
-    public Movies createMovie(@RequestBody Movies movie) {
-        return moviesRepository.save(movie);
+    public Movies createMovie(@RequestBody Movies movie){
+        Movies movies = customMoviesRepository.createMovie(movie);
+        return movies;
     }
 
-    @PutMapping("/{movie_id}")
-    @Transactional
-    public Movies updateMovie(@PathVariable("movie_id") Integer movie_id, @RequestBody Movies movie) {
-        Movies movieToUpdate = moviesRepository.findByMovieId(movie_id).get();
-        movieToUpdate.setTitle(movie.getTitle());
-        movieToUpdate.setReleaseDate(movie.getReleaseDate());
-        movieToUpdate.setDuration(movie.getDuration());
-        movieToUpdate.setDescription(movie.getDescription());
-        movieToUpdate.setAverageRating(movie.getAverageRating());
-        return moviesRepository.save(movieToUpdate);
+    @DeleteMapping(value = "/{movieId}")
+    public void deleteMovie(@PathVariable("movieId") Long movieId) {
+        customMoviesRepository.deleteMovie(movieId);
+    }
+
+    @PutMapping(value = "/{movieId}")
+    public void updateMovie(@PathVariable("movieId") Long movieId, @RequestBody Movies movie) {
+        customMoviesRepository.updateMovie(movieId, movie);
     }
 }

@@ -27,6 +27,4 @@ public class Actor {
 
     private String nationality;
     private String biography;
-
-    // getters and setters
 }

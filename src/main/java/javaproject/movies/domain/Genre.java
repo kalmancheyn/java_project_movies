@@ -19,6 +19,4 @@ public class Genre {
     private Long genreId;
 
     private String name;
-
-    // getters and setters
 }
