@@ -1,6 +1,5 @@
 package javaproject.movies.controller;
 
-import jakarta.transaction.Transactional;
 import javaproject.movies.domain.Movies;
 import javaproject.movies.repository.CustomMoviesRepository;
 import javaproject.movies.repository.MoviesRepository;
@@ -8,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,13 +24,18 @@ public class MoviesController {
 
     @GetMapping("/{movieId}")
     public Movies getMovieById(@PathVariable("movieId") Integer movie_id) {
-        return moviesRepository.findByMovieId(movie_id).get();
+        Optional<Movies> existingMovie = moviesRepository.findByMovieId(movie_id);
+        if (existingMovie.isPresent()) {
+            return existingMovie.get();
+        }
+        else {
+            throw new NoSuchElementException(String.format("No movie found for id %s", movie_id));
+        }
     }
 
     @PostMapping
     public Movies createMovie(@RequestBody Movies movie){
-        Movies movies = customMoviesRepository.createMovie(movie);
-        return movies;
+        return customMoviesRepository.createMovie(movie);
     }
 
     @DeleteMapping(value = "/{movieId}")
