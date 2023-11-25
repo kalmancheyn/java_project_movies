@@ -4,6 +4,8 @@ import javaproject.movies.domain.Movies;
 import javaproject.movies.repository.CustomMoviesRepository;
 import javaproject.movies.repository.MoviesRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,17 +36,20 @@ public class MoviesController {
     }
 
     @PostMapping
-    public Movies createMovie(@RequestBody Movies movie){
-        return customMoviesRepository.createMovie(movie);
+    public ResponseEntity<String> createMovie(@RequestBody Movies movie){
+        customMoviesRepository.createMovie(movie);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Movie created successfully!");
     }
 
     @DeleteMapping(value = "/{movieId}")
-    public void deleteMovie(@PathVariable("movieId") Long movieId) {
+    public ResponseEntity<String>  deleteMovie(@PathVariable("movieId") Integer movieId) {
         customMoviesRepository.deleteMovie(movieId);
+        return ResponseEntity.status(HttpStatus.OK).body("Movie deleted successfully!");
     }
 
     @PutMapping(value = "/{movieId}")
-    public void updateMovie(@PathVariable("movieId") Long movieId, @RequestBody Movies movie) {
+    public ResponseEntity<String>  updateMovie(@PathVariable("movieId") Integer movieId, @RequestBody Movies movie) {
         customMoviesRepository.updateMovie(movieId, movie);
+        return ResponseEntity.status(HttpStatus.OK).body("Movie updated successfully!");
     }
 }

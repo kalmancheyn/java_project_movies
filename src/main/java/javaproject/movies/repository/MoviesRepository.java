@@ -1,5 +1,6 @@
 package javaproject.movies.repository;
 
+import javaproject.movies.domain.Actor;
 import javaproject.movies.domain.Movies;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,6 +17,9 @@ public interface MoviesRepository extends JpaRepository<Movies, Integer> {
 
     @Query("select m from Movies m where m.title = ?1")
     Optional<Movies> findByTitle(String title);
+
+    @Query("select m from Movies m where m.actor = ?1")
+    List<Movies> findByActor(Actor actor);
 
 
 }

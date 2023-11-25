@@ -7,6 +7,7 @@ import javaproject.movies.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -28,19 +29,19 @@ public class CustomMoviesRepositoryImp implements CustomMoviesRepository {
         Movies movies = new Movies();
 
         //check if user exists
-        Optional<User> existingUser = userRepository.findById(Math.toIntExact(movie.getUser().getUserId()));
+        Optional<User> existingUser = userRepository.findById(movie.getUser().getUserId());
         if (existingUser.isEmpty()) {
             throw new NoSuchElementException(String.format("No user found for id %s", movie.getUser().getUsername()));
         }
 
         //check if actor exists
-        Optional<Actor> existingActor = actorRepository.findById(Math.toIntExact(movie.getActor().getActorId()));
+        Optional<Actor> existingActor = actorRepository.findById(movie.getActor().getActorId());
         if (existingActor.isEmpty()) {
             throw new NoSuchElementException(String.format("No actor found for id %s", movie.getActor().getName()));
         }
 
         //check if genre exists
-        Optional<Genre> existingGenre = genreRepository.findById(Math.toIntExact(movie.getGenre().getGenreId()));
+        Optional<Genre> existingGenre = genreRepository.findById(movie.getGenre().getGenreId());
         if (existingGenre.isEmpty()) {
             throw new NoSuchElementException(String.format("No genre found for id %s", movie.getGenre().getName()));
         }
@@ -48,7 +49,6 @@ public class CustomMoviesRepositoryImp implements CustomMoviesRepository {
         //check if movie already exists
         Optional<Movies> existingMovie = moviesRepository.findByTitle(movie.getTitle());
         if (existingMovie.isEmpty()) {
-            movies.setMovieId(movie.getMovieId());
             movies.setTitle(movie.getTitle());
             movies.setReleaseDate(movie.getReleaseDate());
             movies.setGenre(existingGenre.get());
@@ -66,12 +66,12 @@ public class CustomMoviesRepositoryImp implements CustomMoviesRepository {
 
     @Override
     @Transactional
-    public void deleteMovie(Long movieId) {
+    public void deleteMovie(Integer movieId) {
         Optional<Movies> existingMovie = moviesRepository.findById(Math.toIntExact(movieId));
         if (existingMovie.isPresent()) {
-            Optional<Review> existingReview = reviewRepository.findByMovie(existingMovie.get());
-            if (existingReview.isPresent()) {
-                entityManager.remove(existingReview.get());
+            List<Review> existingReview = reviewRepository.findByMovie(existingMovie.get());
+            for (Review r : existingReview) {
+                entityManager.remove(r);
             }
             entityManager.remove(existingMovie.get());
         }
@@ -82,7 +82,7 @@ public class CustomMoviesRepositoryImp implements CustomMoviesRepository {
 
     @Override
     @Transactional
-    public void updateMovie(Long movieId,Movies movie) {
+    public void updateMovie(Integer movieId, Movies movie) {
 
         Optional<Movies> existingMovie = moviesRepository.findById(Math.toIntExact(movieId));
         if (existingMovie.isPresent()) {
