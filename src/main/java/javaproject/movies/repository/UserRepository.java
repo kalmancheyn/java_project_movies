@@ -10,4 +10,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Integer> {
     @Override
     List<User> findAll();
+
+    @Query("select u from User u where u.userId = ?1")
+    Optional<User> findByUserId(Integer userId);
 }

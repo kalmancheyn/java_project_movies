@@ -22,6 +22,4 @@ public class User {
     private String password;
     private String email;
     private String role;
-
-    // getters and setters
 }

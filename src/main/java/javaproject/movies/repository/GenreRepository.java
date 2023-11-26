@@ -10,4 +10,5 @@ public interface GenreRepository extends JpaRepository<Genre, Integer> {
     @Override
     List<Genre> findAll();
 
+    Optional<Genre> findByGenreId(Integer genreId);
 }

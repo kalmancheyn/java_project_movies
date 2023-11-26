@@ -46,4 +46,10 @@ public class ActorController {
         customActorRepository.deleteActor(actorId);
         return ResponseEntity.status(HttpStatus.OK).body("Actor deleted successfully!");
     }
+
+    @PutMapping(value = "/{actorId}")
+    public ResponseEntity<String> updateActor(@PathVariable("actorId") Integer actorId, @RequestBody Actor actor) {
+        customActorRepository.updateActor(actorId, actor);
+        return ResponseEntity.status(HttpStatus.OK).body("Actor updated successfully!");
+    }
 }

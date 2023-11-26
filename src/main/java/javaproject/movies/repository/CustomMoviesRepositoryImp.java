@@ -29,21 +29,36 @@ public class CustomMoviesRepositoryImp implements CustomMoviesRepository {
         Movies movies = new Movies();
 
         //check if user exists
-        Optional<User> existingUser = userRepository.findById(movie.getUser().getUserId());
-        if (existingUser.isEmpty()) {
-            throw new NoSuchElementException(String.format("No user found for id %s", movie.getUser().getUsername()));
+        if (movie.getUser() != null) {
+            Optional<User> existingUser = userRepository.findById(movie.getUser().getUserId());
+            if (existingUser.isEmpty()) {
+                throw new NoSuchElementException(String.format("No user found for id %s", movie.getUser().getUsername()));
+            }
+        }
+        else {
+            movies.setUser(new User());
         }
 
         //check if actor exists
-        Optional<Actor> existingActor = actorRepository.findById(movie.getActor().getActorId());
-        if (existingActor.isEmpty()) {
-            throw new NoSuchElementException(String.format("No actor found for id %s", movie.getActor().getName()));
+        if (movie.getActor() != null) {
+            Optional<Actor> existingActor =actorRepository.findById(movie.getActor().getActorId());
+            if (existingActor.isEmpty()) {
+                throw new NoSuchElementException(String.format("No actor found for id %s", movie.getActor().getName()));
+            }
+        }
+        else {
+            movies.setActor(new Actor());
         }
 
         //check if genre exists
-        Optional<Genre> existingGenre = genreRepository.findById(movie.getGenre().getGenreId());
-        if (existingGenre.isEmpty()) {
-            throw new NoSuchElementException(String.format("No genre found for id %s", movie.getGenre().getName()));
+        if (movie.getGenre() != null) {
+            Optional<Genre> existingGenre = genreRepository.findById(movie.getGenre().getGenreId());
+            if (existingGenre.isEmpty()) {
+                throw new NoSuchElementException(String.format("No genre found for id %s", movie.getGenre().getName()));
+            }
+        }
+        else {
+            movies.setGenre(new Genre());
         }
 
         //check if movie already exists
@@ -51,14 +66,15 @@ public class CustomMoviesRepositoryImp implements CustomMoviesRepository {
         if (existingMovie.isEmpty()) {
             movies.setTitle(movie.getTitle());
             movies.setReleaseDate(movie.getReleaseDate());
-            movies.setGenre(existingGenre.get());
+            movies.setGenre(movie.getGenre());
             movies.setDirector(movie.getDirector());
             movies.setActor(movie.getActor());
             movies.setAverageRating(movie.getAverageRating());
             movies.setDuration(movie.getDuration());
             movies.setDescription(movie.getDescription());
-            movies.setUser(existingUser.get());
-            movies.setActor(existingActor.get());
+            movies.setUser(movie.getUser());
+            movies.setActor(movie.getActor());
+            movies.setPosterUrl(movie.getPosterUrl());
             entityManager.persist(movies);
         }
         return movies;
@@ -83,7 +99,6 @@ public class CustomMoviesRepositoryImp implements CustomMoviesRepository {
     @Override
     @Transactional
     public void updateMovie(Integer movieId, Movies movie) {
-
         Optional<Movies> existingMovie = moviesRepository.findById(Math.toIntExact(movieId));
         if (existingMovie.isPresent()) {
             existingMovie.get().setTitle(movie.getTitle());

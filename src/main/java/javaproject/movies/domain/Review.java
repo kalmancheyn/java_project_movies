@@ -30,6 +30,4 @@ public class Review {
 
     private BigDecimal rating;
     private String comment;
-
-    // getters and setters
 }

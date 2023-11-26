@@ -60,6 +60,7 @@ public class CustomActorRepositoryImp  implements CustomActorRepository {
     }
 
     @Override
+    @Transactional
     public void updateActor(Integer actorId, Actor actor) {
         Optional<Actor> existingActor = actorRepository.findByActorId(actorId);
         if (existingActor.isPresent()) {
