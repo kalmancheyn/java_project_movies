@@ -4,8 +4,8 @@ INSERT INTO genres (name) VALUES ('Action'), ('Drama'), ('Comedy');
 
 INSERT INTO users (username, password, email, role)
 VALUES
-    ('john_doe', 'hashed_password', 'john@example.com', 'USER'),
-    ('jane_smith', 'hashed_password', 'jane@example.com', 'USER')
+    ('john_doe', '$2a$10$VRJh6RWQ7EcQw2G9GMSKY.yhaw7bReoq5fJbBiomk1Xaosa2OgJni', 'john@example.com', 'ROLE_ADMIN'),
+    ('jane_smith', '$2a$10$mSmYDoB8jSrdrTvEK9vTIesiV53q5.B/Ln2IWweHmqRCC.7Rw.ZhG', 'jane@example.com', 'ROLE_USER')
 ;
 
 INSERT INTO actors (name, birthdate, nationality, biography)
