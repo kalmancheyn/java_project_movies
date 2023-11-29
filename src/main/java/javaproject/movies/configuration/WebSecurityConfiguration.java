@@ -32,7 +32,7 @@ public class WebSecurityConfiguration {
         httpSecurity.authorizeHttpRequests(auth -> auth
                         .requestMatchers(antMatcher("/h2-console/**")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.DELETE)).hasRole( "ADMIN" )
-                        .requestMatchers(antMatcher( "/movies/")).hasAnyRole()
+                        .requestMatchers(antMatcher( "/movies/")).hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy. STATELESS ))
