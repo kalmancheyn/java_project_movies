@@ -42,7 +42,7 @@ To install and run this project:
 
 1. Clone the repository.
 2. Download IntelliJ IDE
-3. Open and run the Spring Application
+3. Open and run the Spring Application (On the first run you will need to enable annotation processing because of the Lombok extension. If you don't have it install it first)
 
 
 For detailed API documentation I created a "test-files" folder which contains a  Postman collection JSON file, that you can easily import to Postman and test all the endpoints. (If you want to run AddMoviesFromXlsxFile you have to import to the Body -> Value to the movies.xlsx file which you can find in the "test-files" directory)
