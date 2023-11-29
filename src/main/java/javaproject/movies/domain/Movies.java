@@ -18,7 +18,7 @@ import java.time.LocalDate;
 public class Movies {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long movieId;
+    private Integer movieId;
 
     private String title;
 

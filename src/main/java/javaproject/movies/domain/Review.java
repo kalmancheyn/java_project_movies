@@ -18,7 +18,7 @@ public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long reviewId;
+    private Integer reviewId;
 
     @ManyToOne
     @JoinColumn(name = "movie_id")
@@ -30,6 +30,4 @@ public class Review {
 
     private BigDecimal rating;
     private String comment;
-
-    // getters and setters
 }
